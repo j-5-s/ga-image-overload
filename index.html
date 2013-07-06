@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Overload for GA GIF</title>
+    <script>
+    window._images = [];
+    (function () {
+        var OriginalImage = window.Image;
+        window.Image = function (width, height) {
+            var o =  new OriginalImage(width, height);
+            window._images.push(o);
+            return o;
+        }
+    }());
+    </script>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-XXXXXXXXXX']);
+      _gaq.push(['_setDomainName', 'none']); //set to none for localhost tracking
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+
+    <script>
+        //breaks up ga url into params
+        //http://www.google-analytics.com/__utm.gif?utmwv=5.4.3&utms=8&utmn=1087665281&utmhn=localhost&utmcs=UTF-8&utmsr=1280x800&utmvp=398x679&utmsc=24-bit&utmul=en-us&utmje=1&utmfl=11.7%20r700&utmdt=Image%20Override&utmhid=991863851&utmr=-&utmp=%2Findex.html&utmht=1373130295954&utmac=UA-19811292-1&utmcc=__utma%3D1.404091564.1373129891.1373129891.1373129891.1%3B%2B__utmz%3D1.1373129891.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&utmu=qB~
+        //into 
+        // utmac: "UA-19811292-1"
+        // utmcc: "__utma%3D1.404091564.1373129891.1373129891.1373129891.1%3B%2B__utmz%3D1.1373129891.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
+        // utmcs: "UTF-8"
+        // utmdt: "Image%20Override"
+        // utmfl: "11.7%20r700"
+        // utmhid: "846947542"
+        // utmhn: "localhost"
+        // utmht: "1373130612405"
+        // utmje: "1"
+        // utmn: "342518970"
+        // utmp: "%2Findex.html"
+        // utmr: "-"
+        // utms: "9"
+        // utmsc: "24-bit"
+        // utmsr: "1280x800"
+        // utmu: "qB~"
+        // utmul: "en-us"
+        // utmvp: "398x679"
+        // utmwv: "5.4.3"
+        var parseURLParams = function( uri ) {
+            var parser = document.createElement('a');
+            parser.href = uri;
+            var querystring = parser.search.substring(1,parser.search.length),
+                parts = querystring.split('&');
+
+            var params = {};
+            for (var i = 0; i < parts.length; i++) {
+                var param = parts[i].split('=');
+                params[param[0]] = param[1];
+            }
+            delete parser;
+            return params;
+        };
+
+        window.onload = function() {
+            var body = document.getElementsByTagName('body')[0];
+            for (var i = 0; i < _images.length; i++) {
+                var img = _images[i];
+                if (/google-analytics\.com\/__utm.gif/.test(img.src)) {
+                    console.log(parseURLParams(img.src));
+                    body.innerHTML = img.src;
+                } else {
+                    _images.splice(i,1);
+                    delete img;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Image Overload for access to utm.gif</h1>
+</body>
+</html>
