@@ -39,6 +39,25 @@ and turns it into a JSON object like so:
 }
 ```
 
+## How it works
+
+I'm Overloading the native `Image` Javascript function and storing
+a reference to all images created by it in the global array `_images`. When GA
+creates the __utm.gif, I then have access to it in the _images array:
+
+```Javascript
+window._images = [];
+(function () {
+    var OriginalImage = window.Image;
+    window.Image = function (width, height) {
+        var o =  new OriginalImage(width, height);
+        window._images.push(o);
+        return o;
+    }
+}());
+```
+
+
 ## License
 
 (The MIT License)
