@@ -1,5 +1,5 @@
 # Image Overload For Access to utm.gif
-'''Warning, highly experimental'''
+__Warning, highly experimental__.
 The purpose of this code is to overload the Native JS `Image` functino
 to store a reference to images created with it in order to access them
 later. The primary use case is Google Analytics. When the ___utm.gif 
